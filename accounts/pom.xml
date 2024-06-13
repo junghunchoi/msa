@@ -61,6 +61,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -75,6 +80,20 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>junghunchoi/${project.artifactId}:s4</image>
+						<auth>
+							<username>azzudi@naver.com</username>
+							<password>chlwjdgns13!</password>
+						</auth>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

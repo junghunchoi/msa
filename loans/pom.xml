@@ -66,12 +66,17 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
 				<configuration>
-					<image>
-						<name>eazybytes/${project.artifactId}:s4</name>
-					</image>
+					<to>
+						<image>junghunchoi/${project.artifactId}:s4</image>
+						<auth>
+							<username>azzudi@naver.com</username>
+							<password>chlwjdgns13!</password>
+						</auth>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -66,7 +66,11 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>eazybytes/${project.artifactId}:s4</image>
+						<image>junghunchoi/${project.artifactId}:s4</image>
+						<auth>
+							<username>azzudi@naver.com</username>
+							<password>chlwjdgns13!</password>
+						</auth>
 					</to>
 				</configuration>
 			</plugin>

@@ -1,6 +1,7 @@
 package com.eazybytes.accounts.controller;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
+import com.eazybytes.accounts.dto.AccountsContactInfoDTO;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDto;
@@ -14,6 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +34,24 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path="/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+//@AllArgsConstructor
 @Validated
 public class AccountsController {
 
-    private IAccountsService iAccountsService;
+    private final IAccountsService iAccountsService;
+
+    public AccountsController(IAccountsService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private AccountsContactInfoDTO accountsContactInfoDTO;
+
+    @Value("${build.version}")
+    private String buildVersion;
 
     @Operation(
             summary = "Create Account REST API",
@@ -162,5 +179,37 @@ public class AccountsController {
         }
     }
 
+    @Operation(
+        summary = "Get Build Information",
+        description = "Get Build Information account msa"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status OK"
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "HTTP Status Internal Server Error",
+            content = @Content(
+                schema = @Schema(implementation = ErrorResponseDto.class)
+            )
+        )
+    }
+    )
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
 
+
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDTO> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDTO);
+    }
 }
