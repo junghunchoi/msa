@@ -10,9 +10,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@EnableFeignClients
 /*@ComponentScans({ @ComponentScan("com.eazybytes.loans.controller") })
 @EnableJpaRepositories("com.eazybytes.loans.repository")
 @EntityScan("com.eazybytes.loans.model")*/
