@@ -60,6 +60,12 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+logging:
+  level:
+    com:
+      eazybyes:
+        cards: DEBUG
+
 info:
   app:
     name: "cards"

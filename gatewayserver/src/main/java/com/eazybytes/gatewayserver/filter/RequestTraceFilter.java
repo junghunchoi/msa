@@ -50,7 +50,7 @@ public class RequestTraceFilter implements GlobalFilter {
      * filterUtility.setCorrelationId(exchange, correlationID)를 사용하여 생성한 상관 관계 ID를 ServerWebExchange 객체에 설정합니다.
      * 로거를 사용하여 생성된 상관 관계 ID를 디버그 레벨로 출력합니다.
      *
-     *
+
      * chain.filter(exchange)를 호출하여 요청을 다음 필터 또는 최종 대상으로 전달합니다.
      *
      * 이 때, 상관 관계 ID가 설정된 ServerWebExchange 객체가 전달됩니다.
