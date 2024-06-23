@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 // eureka에 등록된 msa의 이름과 동일해야한다.
-@FeignClient("cards")
+@FeignClient(value = "cards",fallback = CardsFallback.class)
 public interface CardsFeignClient {
 
 	//valid 관련 파라미터는 필요없다.

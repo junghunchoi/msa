@@ -29,6 +29,10 @@ spring:
 #       mode: always
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
   rabbitmq:
     host: "localhost"
     port: 5672
@@ -46,6 +50,9 @@ management:
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 endpoints:
   shutdown:
@@ -71,3 +78,31 @@ logging:
     com:
       eazybytes:
         accounts: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10 # 갯수만큼의 요청이 오면 서비스의 상태를 확인하는지.
+      permittedNumberOfCallsInHalfOpenState: 2 # half open 상태를 처리할 때 설정한 요청의 갯수만큼이 올 떄 확안.
+      failureRateThreshold: 50 # 숫자만큼 실패하면 open 상태로 바뀐다.
+      waitDurationInOpenState: 10000 # 설정한 시간만큼 half open 상태로 둔다.
+
+
+resilience4j.retry:
+    configs:
+      default:
+        maxRetryAttempts: 3 # 3번 시도한다.
+        waitDuration: 100 # 시간만큼 기다린다.
+        enableExponentialBackoff: true # backoff 기능 on
+        exponentialBackoffMultiple: 2
+        ignoreException:
+          - java.lang.NullPointerException
+        retryException:
+          - java.util.concurrent.TimeOutException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000 # 만료되었다면 설정한 시간까지는 요청을 할수 없다.
+      limitRefreshPeriod: 5000 #5초마다 토큰이 충전된다.
+      limitForPeriod: 1 # 5초마다 1번 요청이 가능하다.

@@ -69,7 +69,12 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-config</artifactId>
-    </dependency><dependency>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+    <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
   </dependency>
@@ -104,7 +109,7 @@
         <version>3.4.1</version>
         <configuration>
           <to>
-            <image>junghunchoi/${project.artifactId}:s9</image>
+            <image>junghunchoi/${project.artifactId}:s11</image>
             <auth>
               <username>azzudi@naver.com</username>
               <password>chlwjdgns13!</password>

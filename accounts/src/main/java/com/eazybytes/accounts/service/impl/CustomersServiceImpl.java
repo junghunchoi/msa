@@ -43,10 +43,15 @@ public class CustomersServiceImpl implements ICustomersService {
 
 		// db 처리를 하기 위해서 아래와 같은 메서드를 사용해야한다.
 		ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
-		customerDetailsDto.setLoansDto(loansDtoResponseEntity.getBody());
+		if (null != loansDtoResponseEntity) {
+			customerDetailsDto.setLoansDto(loansDtoResponseEntity.getBody());
+		}
 
 		ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
-		customerDetailsDto.setCardsDto(cardsDtoResponseEntity.getBody());
+		if (null != loansDtoResponseEntity) {
+			customerDetailsDto.setCardsDto(cardsDtoResponseEntity.getBody());
+		}
+
 
 		return customerDetailsDto;
 

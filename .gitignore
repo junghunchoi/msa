@@ -33,3 +33,8 @@ build/
 ### VS Code ###
 .vscode/
 /.idea/
+
+
+### docker compose ###
+./docker-compose/observability
+./docker-compose/prod/.data
