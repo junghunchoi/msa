@@ -1,6 +1,8 @@
 package com.eazybytes.accounts.service.impl;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
+import com.eazybytes.accounts.controller.CustomerController;
+import com.eazybytes.accounts.dto.AccountMsgDto;
 import com.eazybytes.accounts.dto.AccountsDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Accounts;
@@ -13,6 +15,9 @@ import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,9 +27,10 @@ import java.util.Random;
 @Service
 @AllArgsConstructor
 public class AccountsServiceImpl implements IAccountsService {
-
+	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 	private AccountsRepository accountsRepository;
 	private CustomerRepository customerRepository;
+	private final StreamBridge streamBridge;
 
 	/**
 	 * @param customerDto - CustomerDto Object
@@ -40,7 +46,18 @@ public class AccountsServiceImpl implements IAccountsService {
 					+ customerDto.getMobileNumber());
 		}
 		Customer savedCustomer = customerRepository.save(customer);
-		accountsRepository.save(createNewAccount(savedCustomer));
+		Accounts savedAccounts = accountsRepository.save(createNewAccount(savedCustomer));
+		sendCommunication(savedAccounts, savedCustomer);
+	}
+
+	private void sendCommunication(Accounts accounts, Customer customer) {
+		var accountsMsgDTO = new AccountMsgDto(accounts.getAccountNumber(), customer.getName(),
+			customer.getEmail(), customer.getMobileNumber());
+
+		logger.info("sending communication request : {}", accountsMsgDTO);
+		var result = streamBridge.send("sendCommunication-out-0", accountsMsgDTO);
+		logger.info("successful?  : {}", result);
+
 	}
 
 	/**
